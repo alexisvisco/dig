@@ -173,6 +173,10 @@ func (s *Scope) Invoke(function interface{}, opts ...InvokeOption) (err error) {
 		options.hookBeforeInvoke()
 	}
 
+	if options.hookBeforeInvoke != nil {
+		options.hookBeforeInvoke()
+	}
+
 	returned := s.invokerFn(reflect.ValueOf(function), args)
 	if len(returned) == 0 {
 		return nil
