@@ -20,7 +20,7 @@
 
 package dig
 
-import "go.uber.org/dig/internal/graph"
+import "github.com/alexisvisco/dig/internal/graph"
 
 // graphNode is a single node in the dependency graph.
 type graphNode struct {

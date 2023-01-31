@@ -26,8 +26,8 @@ import (
 	"io"
 	"testing"
 
+	"github.com/alexisvisco/dig/internal/dot"
 	"github.com/stretchr/testify/assert"
-	"go.uber.org/dig/internal/dot"
 )
 
 func (c *Container) CreateGraph() *dot.Graph {

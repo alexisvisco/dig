@@ -24,8 +24,8 @@ import (
 	"fmt"
 	"reflect"
 
-	"go.uber.org/dig/internal/digreflect"
-	"go.uber.org/dig/internal/dot"
+	"github.com/alexisvisco/dig/internal/digreflect"
+	"github.com/alexisvisco/dig/internal/dot"
 )
 
 type decoratorState int
@@ -283,7 +283,8 @@ func findResultKeys(r resultList) ([]key, error) {
 			keys = append(keys, key{t: innerResult.Type, name: innerResult.Name})
 		case resultGrouped:
 			if innerResult.Type.Kind() != reflect.Slice {
-				return nil, newErrInvalidInput("decorating a value group requires decorating the entire value group, not a single value", nil)
+				return nil, newErrInvalidInput("decorating a value group requires decorating the entire value group, not a single value",
+					nil)
 			}
 			keys = append(keys, key{t: innerResult.Type.Elem(), group: innerResult.Group})
 		case resultObject:

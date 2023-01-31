@@ -27,8 +27,8 @@ import (
 	"reflect"
 	"sort"
 
-	"go.uber.org/dig/internal/digreflect"
-	"go.uber.org/dig/internal/dot"
+	"github.com/alexisvisco/dig/internal/digreflect"
+	"github.com/alexisvisco/dig/internal/dot"
 )
 
 // Error is an interface implemented by all Dig errors.

@@ -84,7 +84,7 @@ func TestFillProvideInfoString(t *testing.T) {
 
 func TestLocationForPCString(t *testing.T) {
 	opt := LocationForPC(reflect.ValueOf(func() {}).Pointer())
-	assert.Contains(t, fmt.Sprint(opt), `LocationForPC("go.uber.org/dig".TestLocationForPCString.func1 `)
+	assert.Contains(t, fmt.Sprint(opt), `LocationForPC("github.com/alexisvisco/dig".TestLocationForPCString.func1 `)
 }
 
 func TestExportString(t *testing.T) {

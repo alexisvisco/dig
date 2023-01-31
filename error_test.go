@@ -30,8 +30,8 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/alexisvisco/dig/internal/digreflect"
 	"github.com/stretchr/testify/assert"
-	"go.uber.org/dig/internal/digreflect"
 )
 
 // assertErrorMatches matches error messages against the provided list of

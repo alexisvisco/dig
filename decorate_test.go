@@ -26,10 +26,10 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/alexisvisco/dig"
+	"github.com/alexisvisco/dig/internal/digtest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.uber.org/dig"
-	"go.uber.org/dig/internal/digtest"
 )
 
 type myInt interface {

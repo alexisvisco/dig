@@ -31,10 +31,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/alexisvisco/dig"
+	"github.com/alexisvisco/dig/internal/digtest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.uber.org/dig"
-	"go.uber.org/dig/internal/digtest"
 )
 
 func TestEndToEndSuccess(t *testing.T) {
@@ -1045,7 +1045,7 @@ func TestEndToEndSuccess(t *testing.T) {
 		err := c.Invoke(func(B) {})
 		require.Error(t, err, "invoking with B param should error out")
 		dig.AssertErrorMatches(t, err,
-			`missing dependencies for function "go.uber.org/dig_test".TestEndToEndSuccess.func\S+`,
+			`missing dependencies for function "github.com/alexisvisco/dig_test".TestEndToEndSuccess.func\S+`,
 			`dig_test.go:\d+`, // file:line
 			"missing type:",
 			"dig_test.B",
@@ -1391,9 +1391,9 @@ func TestGroups(t *testing.T) {
 		})
 		require.Error(t, err, "expected failure")
 		dig.AssertErrorMatches(t, err,
-			`could not build arguments for function "go.uber.org/dig_test".TestGroups`,
+			`could not build arguments for function "github.com/alexisvisco/dig_test".TestGroups`,
 			`could not build value group string\[group="x"\]:`,
-			`received non-nil error from function "go.uber.org/dig_test".TestGroups\S+`,
+			`received non-nil error from function "github.com/alexisvisco/dig_test".TestGroups\S+`,
 			`dig_test.go:\d+`, // file:line
 			"great sadness",
 		)
@@ -1583,9 +1583,9 @@ func TestRecoverFromPanic(t *testing.T) {
 			},
 			invoke: func(i int) {},
 			wantErr: []string{
-				`could not build arguments for function "go.uber.org/dig_test".TestRecoverFromPanic.\S+`,
+				`could not build arguments for function "github.com/alexisvisco/dig_test".TestRecoverFromPanic.\S+`,
 				`failed to build int:`,
-				`panic: "terrible sadness" in func: "go.uber.org/dig_test".TestRecoverFromPanic.\S+`,
+				`panic: "terrible sadness" in func: "github.com/alexisvisco/dig_test".TestRecoverFromPanic.\S+`,
 			},
 		},
 		{
@@ -1598,9 +1598,9 @@ func TestRecoverFromPanic(t *testing.T) {
 			},
 			invoke: func(s string) {},
 			wantErr: []string{
-				`could not build arguments for function "go.uber.org/dig_test".TestRecoverFromPanic.\S+`,
+				`could not build arguments for function "github.com/alexisvisco/dig_test".TestRecoverFromPanic.\S+`,
 				`failed to build string:`,
-				`panic: "great sadness" in func: "go.uber.org/dig_test".TestRecoverFromPanic.\S+`,
+				`panic: "great sadness" in func: "github.com/alexisvisco/dig_test".TestRecoverFromPanic.\S+`,
 			},
 		},
 		{
@@ -1608,7 +1608,7 @@ func TestRecoverFromPanic(t *testing.T) {
 			setup:  func(c *digtest.Container) {},
 			invoke: func() { panic("terrible woe") },
 			wantErr: []string{
-				`panic: "terrible woe" in func: "go.uber.org/dig_test".TestRecoverFromPanic.\S+`,
+				`panic: "terrible woe" in func: "github.com/alexisvisco/dig_test".TestRecoverFromPanic.\S+`,
 			},
 		},
 	}
@@ -1689,7 +1689,7 @@ func TestProvideConstructorErrors(t *testing.T) {
 				err := c.Provide(tt.constructor)
 				require.Error(t, err, "provide should fail")
 				dig.AssertErrorMatches(t, err,
-					`cannot provide function "go.uber.org/dig_test".TestProvideConstructorErrors\S+`,
+					`cannot provide function "github.com/alexisvisco/dig_test".TestProvideConstructorErrors\S+`,
 					`dig_test.go:\d+`, // file:line
 					`bad argument 1:`,
 					`cannot depend on result objects: `+tt.msg)
@@ -1713,7 +1713,7 @@ func TestProvideConstructorErrors(t *testing.T) {
 		require.Error(t, err)
 
 		dig.AssertErrorMatches(t, err,
-			`cannot provide function "go.uber.org/dig_test".TestProvideConstructorErrors\S+`,
+			`cannot provide function "github.com/alexisvisco/dig_test".TestProvideConstructorErrors\S+`,
 			`dig_test.go:\d+`, // file:line
 			`bad result 1:`,
 			"cannot specify a name for result objects: dig_test.out embeds dig.Out",
@@ -1741,7 +1741,7 @@ func TestProvideConstructorErrors(t *testing.T) {
 		require.Error(t, err)
 
 		dig.AssertErrorMatches(t, err,
-			`cannot provide function "go.uber.org/dig_test".TestProvideConstructorErrors\S+`,
+			`cannot provide function "github.com/alexisvisco/dig_test".TestProvideConstructorErrors\S+`,
 			`dig_test.go:\d+`, // file:line
 			`bad field "Result1" of dig_test.Result2:`,
 			"cannot specify a name for result objects: dig_test.Result1 embeds dig.Out",
@@ -1769,10 +1769,10 @@ func TestProvideRespectsConstructorErrors(t *testing.T) {
 		var called bool
 		err := c.Invoke(func(b *bytes.Buffer) { called = true })
 		dig.AssertErrorMatches(t, err,
-			`could not build arguments for function "go.uber.org/dig_test".TestProvideRespectsConstructorErrors\S+`,
+			`could not build arguments for function "github.com/alexisvisco/dig_test".TestProvideRespectsConstructorErrors\S+`,
 			`dig_test.go:\d+`, // file:line
 			`failed to build \*bytes.Buffer:`,
-			`received non-nil error from function "go.uber.org/dig_test".TestProvideRespectsConstructorErrors\S+`,
+			`received non-nil error from function "github.com/alexisvisco/dig_test".TestProvideRespectsConstructorErrors\S+`,
 			`dig_test.go:\d+`, // file:line
 			`oh no`)
 		assert.False(t, called, "shouldn't call invoked function when deps aren't available")
@@ -2027,7 +2027,7 @@ func TestProvideLocation(t *testing.T) {
 
 	err := c.Invoke(func(y float64) {})
 	require.Error(t, err)
-	require.Contains(t, err.Error(), `"go.uber.org/dig_test".testStruct.TestMethod`)
+	require.Contains(t, err.Error(), `"github.com/alexisvisco/dig_test".testStruct.TestMethod`)
 	require.Contains(t, err.Error(), `dig/dig_test.go`)
 }
 
@@ -2066,7 +2066,7 @@ func TestCantProvideParameterObjects(t *testing.T) {
 		})
 		require.Error(t, err, "provide should fail")
 		dig.AssertErrorMatches(t, err,
-			`cannot provide function "go.uber.org/dig_test".TestCantProvideParameterObjects\S+`,
+			`cannot provide function "github.com/alexisvisco/dig_test".TestCantProvideParameterObjects\S+`,
 			`dig_test.go:\d+`, // file:line
 			"bad result 1:",
 			"cannot provide parameter objects: dig_test.Args embeds a dig.In",
@@ -2082,7 +2082,7 @@ func TestCantProvideParameterObjects(t *testing.T) {
 		err := c.Provide(func() (*Args, error) { return args, nil })
 		require.Error(t, err)
 		dig.AssertErrorMatches(t, err,
-			`cannot provide function "go.uber.org/dig_test".TestCantProvideParameterObjects\S+`,
+			`cannot provide function "github.com/alexisvisco/dig_test".TestCantProvideParameterObjects\S+`,
 			`dig_test.go:\d+`, // file:line
 			"bad result 1:",
 			`cannot provide parameter objects: \*dig_test.Args embeds a dig.In`,
@@ -2188,16 +2188,17 @@ func testProvideCycleFails(t *testing.T, dryRun bool) {
 		require.Error(t, err, "expected error when introducing cycle")
 		require.True(t, dig.IsCycleDetected(err))
 		dig.AssertErrorMatches(t, err,
-			`cannot provide function "go.uber.org/dig_test".testProvideCycleFails.\S+`,
+			`cannot provide function "github.com/alexisvisco/dig_test".testProvideCycleFails.\S+`,
 			`dig_test.go:\d+`, // file:line
 			`this function introduces a cycle:`,
-			`func\(\*dig_test.C\) \*dig_test.A provided by "go.uber.org/dig_test".testProvideCycleFails\S+ \(\S+\)`,
-			`depends on func\(\*dig_test.B\) \*dig_test.C provided by "go.uber.org/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
-			`depends on func\(\*dig_test.A\) \*dig_test.B provided by "go.uber.org/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
-			`depends on func\(\*dig_test.C\) \*dig_test.A provided by "go.uber.org/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
+			`func\(\*dig_test.C\) \*dig_test.A provided by "github.com/alexisvisco/dig_test".testProvideCycleFails\S+ \(\S+\)`,
+			`depends on func\(\*dig_test.B\) \*dig_test.C provided by "github.com/alexisvisco/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
+			`depends on func\(\*dig_test.A\) \*dig_test.B provided by "github.com/alexisvisco/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
+			`depends on func\(\*dig_test.C\) \*dig_test.A provided by "github.com/alexisvisco/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
 		)
 		assert.NotContains(t, err.Error(), "[scope")
-		assert.Error(t, c.Invoke(func(c *C) {}), "expected invoking a function that uses a type that failed to provide to fail.")
+		assert.Error(t, c.Invoke(func(c *C) {}),
+			"expected invoking a function that uses a type that failed to provide to fail.")
 	})
 
 	t.Run("dig.In based cycle", func(t *testing.T) {
@@ -2237,15 +2238,16 @@ func testProvideCycleFails(t *testing.T, dryRun bool) {
 		require.Error(t, err, "expected error when introducing cycle")
 		require.True(t, dig.IsCycleDetected(err))
 		dig.AssertErrorMatches(t, err,
-			`cannot provide function "go.uber.org/dig_test".testProvideCycleFails.\S+`,
+			`cannot provide function "github.com/alexisvisco/dig_test".testProvideCycleFails.\S+`,
 			`dig_test.go:\d+`, // file:line
 			`this function introduces a cycle:`,
-			`func\(dig_test.AParams\) dig_test.A provided by "go.uber.org/dig_test".testProvideCycleFails\S+ \(\S+\)`,
-			`depends on func\(dig_test.CParams\) dig_test.C provided by "go.uber.org/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
-			`depends on func\(dig_test.BParams\) dig_test.B provided by "go.uber.org/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
-			`depends on func\(dig_test.AParams\) dig_test.A provided by "go.uber.org/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
+			`func\(dig_test.AParams\) dig_test.A provided by "github.com/alexisvisco/dig_test".testProvideCycleFails\S+ \(\S+\)`,
+			`depends on func\(dig_test.CParams\) dig_test.C provided by "github.com/alexisvisco/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
+			`depends on func\(dig_test.BParams\) dig_test.B provided by "github.com/alexisvisco/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
+			`depends on func\(dig_test.AParams\) dig_test.A provided by "github.com/alexisvisco/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
 		)
-		assert.Error(t, c.Invoke(func(c C) {}), "expected invoking a function that uses a type that failed to provide to fail.")
+		assert.Error(t, c.Invoke(func(c C) {}),
+			"expected invoking a function that uses a type that failed to provide to fail.")
 	})
 
 	t.Run("group based cycle", func(t *testing.T) {
@@ -2309,13 +2311,13 @@ func testProvideCycleFails(t *testing.T, dryRun bool) {
 		require.Error(t, err)
 		require.True(t, dig.IsCycleDetected(err))
 		dig.AssertErrorMatches(t, err,
-			`cannot provide function "go.uber.org/dig_test".testProvideCycleFails.\S+`,
+			`cannot provide function "github.com/alexisvisco/dig_test".testProvideCycleFails.\S+`,
 			`dig_test.go:\d+`, // file:line
 			`this function introduces a cycle:`,
-			`func\(\*dig_test.D\) dig_test.outB provided by "go.uber.org/dig_test".testProvideCycleFails\S+ \(\S+\)`,
-			`depends on func\(dig_test.inD\) \*dig_test.D provided by "go.uber.org/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
-			`depends on func\(dig_test.inC\) dig_test.outC provided by "go.uber.org/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
-			`depends on func\(\*dig_test.D\) dig_test.outB provided by "go.uber.org/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
+			`func\(\*dig_test.D\) dig_test.outB provided by "github.com/alexisvisco/dig_test".testProvideCycleFails\S+ \(\S+\)`,
+			`depends on func\(dig_test.inD\) \*dig_test.D provided by "github.com/alexisvisco/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
+			`depends on func\(dig_test.inC\) dig_test.outC provided by "github.com/alexisvisco/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
+			`depends on func\(\*dig_test.D\) dig_test.outB provided by "github.com/alexisvisco/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
 		)
 	})
 
@@ -2343,10 +2345,10 @@ func testProvideCycleFails(t *testing.T, dryRun bool) {
 		assert.True(t, dig.IsCycleDetected(err))
 		dig.AssertErrorMatches(t, err,
 			`cycle detected in dependency graph:`,
-			`func\(\*dig_test.C\) \*dig_test.A provided by "go.uber.org/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
-			`depends on func\(\*dig_test.B\) \*dig_test.C provided by "go.uber.org/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
-			`depends on func\(\*dig_test.A\) \*dig_test.B provided by "go.uber.org/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
-			`depends on func\(\*dig_test.C\) \*dig_test.A provided by "go.uber.org/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
+			`func\(\*dig_test.C\) \*dig_test.A provided by "github.com/alexisvisco/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
+			`depends on func\(\*dig_test.B\) \*dig_test.C provided by "github.com/alexisvisco/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
+			`depends on func\(\*dig_test.A\) \*dig_test.B provided by "github.com/alexisvisco/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
+			`depends on func\(\*dig_test.C\) \*dig_test.A provided by "github.com/alexisvisco/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
 		)
 	})
 
@@ -2371,8 +2373,8 @@ func testProvideCycleFails(t *testing.T, dryRun bool) {
 		assert.True(t, dig.IsCycleDetected(err))
 		dig.AssertErrorMatches(t, err,
 			`cycle detected in dependency graph:`,
-			`func\(\*dig_test.C\) \*dig_test.C provided by "go.uber.org/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
-			`depends on func\(\*dig_test.C\) \*dig_test.C provided by "go.uber.org/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
+			`func\(\*dig_test.C\) \*dig_test.C provided by "github.com/alexisvisco/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
+			`depends on func\(\*dig_test.C\) \*dig_test.C provided by "github.com/alexisvisco/dig_test".testProvideCycleFails.\S+ \(\S+\)`,
 		)
 	})
 }
@@ -2498,7 +2500,7 @@ func testProvideFailures(t *testing.T, dryRun bool) {
 		})
 		require.Error(t, err, "provide must return error")
 		dig.AssertErrorMatches(t, err,
-			`cannot provide function "go.uber.org/dig_test".testProvideFailures\S+`,
+			`cannot provide function "github.com/alexisvisco/dig_test".testProvideFailures\S+`,
 			`dig_test.go:\d+`, // file:line
 			`cannot provide dig_test.A from \[0\].A2:`,
 			`already provided by \[0\].A1`,
@@ -2525,7 +2527,7 @@ func testProvideFailures(t *testing.T, dryRun bool) {
 		}, dig.As(new(interface{})))
 		require.Error(t, err, "provide must return error")
 		dig.AssertErrorMatches(t, err,
-			`cannot provide function "go.uber.org/dig_test".testProvideFailures\S+`,
+			`cannot provide function "github.com/alexisvisco/dig_test".testProvideFailures\S+`,
 			`dig_test.go:\d+`, // file:line
 			`cannot provide interface {} from \[0\].A2:`,
 			`already provided by \[0\].A1`,
@@ -2552,10 +2554,10 @@ func testProvideFailures(t *testing.T, dryRun bool) {
 		})
 		require.Error(t, err, "expected error on the second provide")
 		dig.AssertErrorMatches(t, err,
-			`cannot provide function "go.uber.org/dig_test".testProvideFailures\S+`,
+			`cannot provide function "github.com/alexisvisco/dig_test".testProvideFailures\S+`,
 			`dig_test.go:\d+`, // file:line
 			`cannot provide \*dig_test.A\[name="foo"\] from \[0\].A:`,
-			`already provided by "go.uber.org/dig_test".testProvideFailures\S+`,
+			`already provided by "github.com/alexisvisco/dig_test".testProvideFailures\S+`,
 		)
 	})
 
@@ -2572,7 +2574,7 @@ func testProvideFailures(t *testing.T, dryRun bool) {
 		err := c.Provide(func() out1 { return out1{a2: A{77}} })
 		require.Error(t, err)
 		dig.AssertErrorMatches(t, err,
-			`cannot provide function "go.uber.org/dig_test".testProvideFailures\S+`,
+			`cannot provide function "github.com/alexisvisco/dig_test".testProvideFailures\S+`,
 			`dig_test.go:\d+`, // file:line
 			"bad result 1:",
 			`bad field "a2" of dig_test.out1:`,
@@ -2590,7 +2592,7 @@ func testProvideFailures(t *testing.T, dryRun bool) {
 		err := c.Provide(func() *out { return &out{String: "foo"} })
 		require.Error(t, err)
 		dig.AssertErrorMatches(t, err,
-			`cannot provide function "go.uber.org/dig_test".testProvideFailures\S+`,
+			`cannot provide function "github.com/alexisvisco/dig_test".testProvideFailures\S+`,
 			`dig_test.go:\d+`, // file:line
 			"bad result 1:",
 			`cannot return a pointer to a result object, use a value instead: \*dig_test.out is a pointer to a struct that embeds dig.Out`,
@@ -2609,7 +2611,7 @@ func testProvideFailures(t *testing.T, dryRun bool) {
 		err := c.Provide(func() out { return out{String: "foo"} })
 		require.Error(t, err)
 		dig.AssertErrorMatches(t, err,
-			`cannot provide function "go.uber.org/dig_test".testProvideFailures\S+`,
+			`cannot provide function "github.com/alexisvisco/dig_test".testProvideFailures\S+`,
 			`dig_test.go:\d+`, // file:line
 			"bad result 1:",
 			`cannot build a result object by embedding \*dig.Out, embed dig.Out instead: dig_test.out embeds \*dig.Out`,
@@ -2675,7 +2677,7 @@ func testProvideFailures(t *testing.T, dryRun bool) {
 		}, dig.LocationForPC(reflect.ValueOf(locationFn).Pointer()))
 		require.Error(t, err, "provide must return error")
 		dig.AssertErrorMatches(t, err,
-			`cannot provide function "go.uber.org/dig_test".testProvideFailures.func\d+.1`,
+			`cannot provide function "github.com/alexisvisco/dig_test".testProvideFailures.func\d+.1`,
 		)
 	})
 }
@@ -2712,7 +2714,7 @@ func testInvokeFailures(t *testing.T, dryRun bool) {
 		err := c.Invoke(func(*bytes.Buffer) {})
 		require.Error(t, err, "expected failure")
 		dig.AssertErrorMatches(t, err,
-			`missing dependencies for function "go.uber.org/dig_test".testInvokeFailures\S+`,
+			`missing dependencies for function "github.com/alexisvisco/dig_test".testInvokeFailures\S+`,
 			`dig_test.go:\d+`,
 			`missing type:`,
 			`\*bytes.Buffer`,
@@ -2737,7 +2739,7 @@ func testInvokeFailures(t *testing.T, dryRun bool) {
 
 		require.Error(t, err, "expected invoke error")
 		dig.AssertErrorMatches(t, err,
-			`missing dependencies for function "go.uber.org/dig_test".testInvokeFailures\S+`,
+			`missing dependencies for function "github.com/alexisvisco/dig_test".testInvokeFailures\S+`,
 			`dig_test.go:\d+`, // file:line
 			`missing type:`,
 			`\*dig_test.type2`,
@@ -2756,7 +2758,7 @@ func testInvokeFailures(t *testing.T, dryRun bool) {
 		})
 		require.Error(t, err, "invoke should fail")
 		dig.AssertErrorMatches(t, err,
-			`missing dependencies for function "go.uber.org/dig_test".testInvokeFailures.\S+`,
+			`missing dependencies for function "github.com/alexisvisco/dig_test".testInvokeFailures.\S+`,
 			`dig_test.go:\d+`, // file:line
 			`missing type:`,
 			`\*bytes.Buffer\[name="foo"\]`,
@@ -2787,10 +2789,10 @@ func testInvokeFailures(t *testing.T, dryRun bool) {
 		})
 		require.Error(t, err, "invoke must fail")
 		dig.AssertErrorMatches(t, err,
-			`could not build arguments for function "go.uber.org/dig_test".testInvokeFailures\S+`,
+			`could not build arguments for function "github.com/alexisvisco/dig_test".testInvokeFailures\S+`,
 			`dig_test.go:\d+`, // file:line
 			`failed to build \*dig_test.type3:`,
-			`missing dependencies for function "go.uber.org/dig_test".testInvokeFailures.\S+`,
+			`missing dependencies for function "github.com/alexisvisco/dig_test".testInvokeFailures.\S+`,
 			`dig_test.go:\d+`, // file:line
 			`missing type:`,
 			`\*dig_test.type1`,
@@ -2822,10 +2824,10 @@ func testInvokeFailures(t *testing.T, dryRun bool) {
 
 		require.Error(t, err, "invoke must fail")
 		dig.AssertErrorMatches(t, err,
-			`could not build arguments for function "go.uber.org/dig_test".testInvokeFailures\S+`,
+			`could not build arguments for function "github.com/alexisvisco/dig_test".testInvokeFailures\S+`,
 			`dig_test.go:\d+`, // file:line
 			`failed to build dig_test.type3:`,
-			`missing dependencies for function "go.uber.org/dig_test".testInvokeFailures.\S+`,
+			`missing dependencies for function "github.com/alexisvisco/dig_test".testInvokeFailures.\S+`,
 			`dig_test.go:\d+`, // file:line
 			`missing types:`,
 			"dig_test.type1",
@@ -2875,7 +2877,7 @@ func testInvokeFailures(t *testing.T, dryRun bool) {
 
 		require.Error(t, err, "expected provide error")
 		dig.AssertErrorMatches(t, err,
-			`cannot provide function "go.uber.org/dig_test".testInvokeFailures\S+`,
+			`cannot provide function "github.com/alexisvisco/dig_test".testInvokeFailures\S+`,
 			`dig_test.go:\d+`, // file:line
 			"bad argument 1:",
 			`bad field "Args" of dig_test.args:`,
@@ -2942,13 +2944,13 @@ func testInvokeFailures(t *testing.T, dryRun bool) {
 		})
 		require.Error(t, err, "expected invoke error")
 		dig.AssertErrorMatches(t, err,
-			`could not build arguments for function "go.uber.org/dig_test".testInvokeFailures\S+`,
+			`could not build arguments for function "github.com/alexisvisco/dig_test".testInvokeFailures\S+`,
 			`dig_test.go:\d+`, // file:line
 			`failed to build \*dig_test.dep:`,
-			`could not build arguments for function "go.uber.org/dig_test".testInvokeFailures.\S+`,
+			`could not build arguments for function "github.com/alexisvisco/dig_test".testInvokeFailures.\S+`,
 			`dig_test.go:\d+`, // file:line
 			`failed to build \*dig_test.failed:`,
-			`received non-nil error from function "go.uber.org/dig_test".testInvokeFailures.\S+`,
+			`received non-nil error from function "github.com/alexisvisco/dig_test".testInvokeFailures.\S+`,
 			`dig_test.go:\d+`, // file:line
 			`failed`,
 		)
@@ -2987,7 +2989,7 @@ func testInvokeFailures(t *testing.T, dryRun bool) {
 		err := c.Invoke(func(param2) {})
 		require.Error(t, err, "provide should return error since cases don't match")
 		dig.AssertErrorMatches(t, err,
-			`missing dependencies for function "go.uber.org/dig_test".testInvokeFailures\S+`,
+			`missing dependencies for function "github.com/alexisvisco/dig_test".testInvokeFailures\S+`,
 			`dig_test.go:\d+`, // file:line
 			`missing type:`,
 			`dig_test.A\[name="camelcase"\]`)
@@ -3029,7 +3031,7 @@ func testInvokeFailures(t *testing.T, dryRun bool) {
 		err := c.Provide(func(in) int { return 0 })
 		require.Error(t, err, "Provide must fail")
 		dig.AssertErrorMatches(t, err,
-			`cannot provide function "go.uber.org/dig_test".testInvokeFailures\S+`,
+			`cannot provide function "github.com/alexisvisco/dig_test".testInvokeFailures\S+`,
 			`dig_test.go:\d+`, // file:line
 			"bad argument 1:",
 			`bad field "foo" of dig_test.in:`,
@@ -3194,7 +3196,7 @@ func testInvokeFailures(t *testing.T, dryRun bool) {
 					`dig_test.go:\d+`, // file:line
 				}, tc.errContains...)
 				dig.AssertErrorMatches(t, err,
-					`missing dependencies for function "go.uber.org/dig_test".testInvokeFailures.\S+`,
+					`missing dependencies for function "github.com/alexisvisco/dig_test".testInvokeFailures.\S+`,
 					lines...)
 			})
 		}
@@ -3208,7 +3210,7 @@ func testInvokeFailures(t *testing.T, dryRun bool) {
 		})
 		require.Error(t, err)
 		dig.AssertErrorMatches(t, err,
-			`missing dependencies for function "go.uber.org/dig_test".testInvokeFailures.\S+`,
+			`missing dependencies for function "github.com/alexisvisco/dig_test".testInvokeFailures.\S+`,
 			`dig_test.go:\d+`, // file:line
 			`missing type:`,
 			`io.Reader \(did you mean (to use )?\*bytes.Reader\?\)`,
@@ -3226,7 +3228,7 @@ func testInvokeFailures(t *testing.T, dryRun bool) {
 		})
 		require.Error(t, err)
 		dig.AssertErrorMatches(t, err,
-			`missing dependencies for function "go.uber.org/dig_test".testInvokeFailures.\S+`,
+			`missing dependencies for function "github.com/alexisvisco/dig_test".testInvokeFailures.\S+`,
 			`dig_test.go:\d+`, // file:line
 			`missing type:`,
 			`io.Reader \(did you mean (to use one of )?\*bytes.Buffer, or \*bytes.Reader\?\)`,
@@ -3244,7 +3246,7 @@ func testInvokeFailures(t *testing.T, dryRun bool) {
 		})
 		require.Error(t, err)
 		dig.AssertErrorMatches(t, err,
-			`missing dependencies for function "go.uber.org/dig_test".testInvokeFailures.\S+`,
+			`missing dependencies for function "github.com/alexisvisco/dig_test".testInvokeFailures.\S+`,
 			`dig_test.go:\d+`, // file:line
 			`missing types:`,
 			`io.Writer \(did you mean (to use )?\*bytes.Buffer\?\)`,
@@ -3261,7 +3263,7 @@ func testInvokeFailures(t *testing.T, dryRun bool) {
 
 		require.Error(t, err)
 		dig.AssertErrorMatches(t, err,
-			`missing dependencies for function "go.uber.org/dig_test".testInvokeFailures.\S+`,
+			`missing dependencies for function "github.com/alexisvisco/dig_test".testInvokeFailures.\S+`,
 			`dig_test.go:\d+`, // file:line
 			`missing type:`,
 			`\*bytes.Buffer \(did you mean (to use )?io.Writer\?\)`,
@@ -3280,7 +3282,7 @@ func testInvokeFailures(t *testing.T, dryRun bool) {
 
 		require.Error(t, err)
 		dig.AssertErrorMatches(t, err,
-			`missing dependencies for function "go.uber.org/dig_test".testInvokeFailures.\S+`,
+			`missing dependencies for function "github.com/alexisvisco/dig_test".testInvokeFailures.\S+`,
 			`dig_test.go:\d+`, // file:line
 			`missing type:`,
 			`\*bytes.Buffer \(did you mean (to use one of )?io.Reader, or io.Writer\?\)`,
@@ -3300,7 +3302,7 @@ func testInvokeFailures(t *testing.T, dryRun bool) {
 
 		require.Error(t, err, "expected Invoke error")
 		dig.AssertErrorMatches(t, err,
-			`received non-nil error from function "go.uber.org/dig_test".testInvokeFailures.func\S+`,
+			`received non-nil error from function "github.com/alexisvisco/dig_test".testInvokeFailures.func\S+`,
 			`dig_test.go:\d+`, // file:line
 			"great sadness",
 		)
@@ -3325,11 +3327,11 @@ func testInvokeFailures(t *testing.T, dryRun bool) {
 
 		require.Error(t, err, "expected Invoke error")
 		dig.AssertErrorMatches(t, err,
-			`could not build arguments for function "go.uber.org/dig_test".testInvokeFailures\S+`,
+			`could not build arguments for function "github.com/alexisvisco/dig_test".testInvokeFailures\S+`,
 			"failed to build dig_test.B",
-			`could not build arguments for function "go.uber.org/dig_test".testInvokeFailures\S+`,
+			`could not build arguments for function "github.com/alexisvisco/dig_test".testInvokeFailures\S+`,
 			"failed to build dig_test.A",
-			`received non-nil error from function "go.uber.org/dig_test".testInvokeFailures.func\S+`,
+			`received non-nil error from function "github.com/alexisvisco/dig_test".testInvokeFailures.func\S+`,
 			`dig_test.go:\d+`, // file:line
 			"great sadness",
 		)
@@ -3355,9 +3357,9 @@ func testInvokeFailures(t *testing.T, dryRun bool) {
 
 		require.Error(t, err, "expected Invoke error")
 		dig.AssertErrorMatches(t, err,
-			`could not build arguments for function "go.uber.org/dig_test".testInvokeFailures.func\S+`,
+			`could not build arguments for function "github.com/alexisvisco/dig_test".testInvokeFailures.func\S+`,
 			"failed to build dig_test.A:",
-			`received non-nil error from function "go.uber.org/dig_test".testInvokeFailures.func\S+`,
+			`received non-nil error from function "github.com/alexisvisco/dig_test".testInvokeFailures.func\S+`,
 			`dig_test.go:\d+`, // file:line
 			"great sadness",
 		)
@@ -3388,12 +3390,12 @@ func testInvokeFailures(t *testing.T, dryRun bool) {
 
 		require.Error(t, err, "expected Invoke error")
 		dig.AssertErrorMatches(t, err,
-			`could not build arguments for function "go.uber.org/dig_test".testInvokeFailures.func\S+`,
+			`could not build arguments for function "github.com/alexisvisco/dig_test".testInvokeFailures.func\S+`,
 			`dig_test.go:\d+`, // file:line
 			"failed to build dig_test.B:",
-			`could not build arguments for function "go.uber.org/dig_test".testInvokeFailures.func\S+`,
+			`could not build arguments for function "github.com/alexisvisco/dig_test".testInvokeFailures.func\S+`,
 			"failed to build dig_test.A:",
-			`received non-nil error from function "go.uber.org/dig_test".testInvokeFailures.func\S+`,
+			`received non-nil error from function "github.com/alexisvisco/dig_test".testInvokeFailures.func\S+`,
 			`dig_test.go:\d+`, // file:line
 			"great sadness",
 		)
@@ -3428,10 +3430,10 @@ func testInvokeFailures(t *testing.T, dryRun bool) {
 		})
 		require.Error(t, err, "expected failure")
 		dig.AssertErrorMatches(t, err,
-			`could not build arguments for function "go.uber.org/dig_test".testInvokeFailures.\S+`,
+			`could not build arguments for function "github.com/alexisvisco/dig_test".testInvokeFailures.\S+`,
 			`dig_test.go:\d+`, // file:line
 			`could not build value group dig_test.B\[group="b"\]:`,
-			`missing dependencies for function "go.uber.org/dig_test".testInvokeFailures.\S+`,
+			`missing dependencies for function "github.com/alexisvisco/dig_test".testInvokeFailures.\S+`,
 			`dig_test.go:\d+`, // file:line
 			"missing type:",
 			"dig_test.A",
@@ -3771,10 +3773,10 @@ func TestEndToEndSuccessWithAliases(t *testing.T) {
 		err := c.Provide(func() B { return B{} })
 		require.Error(t, err, "B should fail to provide")
 		dig.AssertErrorMatches(t, err,
-			`cannot provide function "go.uber.org/dig_test".TestEndToEndSuccessWithAliases\S+`,
+			`cannot provide function "github.com/alexisvisco/dig_test".TestEndToEndSuccessWithAliases\S+`,
 			`dig_test.go:\d+`, // file:line
 			`cannot provide dig_test.A from \[0\]:`,
-			`already provided by "go.uber.org/dig_test".TestEndToEndSuccessWithAliases\S+`,
+			`already provided by "github.com/alexisvisco/dig_test".TestEndToEndSuccessWithAliases\S+`,
 		)
 	})
 
@@ -3788,8 +3790,9 @@ func TestEndToEndSuccessWithAliases(t *testing.T) {
 		}, dig.LocationForPC(reflect.TypeOf(testStruct{}).Method(0).Func.Pointer()))
 
 		require.Error(t, err)
-		require.Contains(t, err.Error(), `cannot provide function "go.uber.org/dig_test".testStruct.TestMethod`)
-		require.Contains(t, err.Error(), `already provided by "go.uber.org/dig_test".testStruct.TestMethod`)
+		require.Contains(t, err.Error(),
+			`cannot provide function "github.com/alexisvisco/dig_test".testStruct.TestMethod`)
+		require.Contains(t, err.Error(), `already provided by "github.com/alexisvisco/dig_test".testStruct.TestMethod`)
 	})
 
 	t.Run("named instances", func(t *testing.T) {

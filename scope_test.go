@@ -23,9 +23,9 @@ package dig_test
 import (
 	"testing"
 
+	"github.com/alexisvisco/dig"
+	"github.com/alexisvisco/dig/internal/digtest"
 	"github.com/stretchr/testify/assert"
-	"go.uber.org/dig"
-	"go.uber.org/dig/internal/digtest"
 )
 
 func TestScopedOperations(t *testing.T) {
@@ -102,7 +102,8 @@ func TestScopedOperations(t *testing.T) {
 		root := digtest.New(t)
 
 		allScopes = append(allScopes, root.Scope("child 1"), root.Scope("child 2"))
-		allScopes = append(allScopes, allScopes[0].Scope("grandchild 1"), allScopes[1].Scope("grandchild 2"), allScopes[1].Scope("grandchild 3"))
+		allScopes = append(allScopes, allScopes[0].Scope("grandchild 1"), allScopes[1].Scope("grandchild 2"),
+			allScopes[1].Scope("grandchild 3"))
 
 		root.RequireProvide(func() *A {
 			return &A{}
@@ -126,7 +127,8 @@ func TestScopedOperations(t *testing.T) {
 		var allScopes []*digtest.Scope
 
 		allScopes = append(allScopes, root.Scope("child 1"), root.Scope("child 2"))
-		allScopes = append(allScopes, allScopes[0].Scope("grandchild 1"), allScopes[1].Scope("grandchild 2"), allScopes[1].Scope("grandchild 3"))
+		allScopes = append(allScopes, allScopes[0].Scope("grandchild 1"), allScopes[1].Scope("grandchild 2"),
+			allScopes[1].Scope("grandchild 3"))
 
 		type A struct{}
 		// provide to the leaf Scope with Export option set.

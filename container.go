@@ -25,7 +25,7 @@ import (
 	"math/rand"
 	"reflect"
 
-	"go.uber.org/dig/internal/dot"
+	"github.com/alexisvisco/dig/internal/dot"
 )
 
 const (

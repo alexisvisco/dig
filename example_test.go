@@ -25,7 +25,7 @@ import (
 	"log"
 	"os"
 
-	"go.uber.org/dig"
+	"github.com/alexisvisco/dig"
 )
 
 func Example_minimal() {

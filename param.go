@@ -26,8 +26,8 @@ import (
 	"strconv"
 	"strings"
 
-	"go.uber.org/dig/internal/digerror"
-	"go.uber.org/dig/internal/dot"
+	"github.com/alexisvisco/dig/internal/digerror"
+	"github.com/alexisvisco/dig/internal/dot"
 )
 
 // The param interface represents a dependency for a constructor.
@@ -76,7 +76,8 @@ func newParam(t reflect.Type, c containerStore) (param, error) {
 			"cannot build a parameter object by embedding *dig.In, embed dig.In instead: %v embeds *dig.In", t), nil)
 	case t.Kind() == reflect.Ptr && IsIn(t.Elem()):
 		return nil, newErrInvalidInput(fmt.Sprintf(
-			"cannot depend on a pointer to a parameter object, use a value instead: %v is a pointer to a struct that embeds dig.In", t), nil)
+			"cannot depend on a pointer to a parameter object, use a value instead: %v is a pointer to a struct that embeds dig.In",
+			t), nil)
 	default:
 		return paramSingle{Type: t}, nil
 	}
@@ -447,7 +448,8 @@ func newParamObjectField(idx int, f reflect.StructField, c containerStore) (para
 	switch {
 	case f.PkgPath != "":
 		return pof, newErrInvalidInput(
-			fmt.Sprintf("unexported fields not allowed in dig.In, did you mean to export %q (%v)?", f.Name, f.Type), nil)
+			fmt.Sprintf("unexported fields not allowed in dig.In, did you mean to export %q (%v)?", f.Name, f.Type),
+			nil)
 
 	case f.Tag.Get(_groupTag) != "":
 		var err error
@@ -542,13 +544,16 @@ func newParamGroupedSlice(f reflect.StructField, c containerStore) (paramGrouped
 	switch {
 	case f.Type.Kind() != reflect.Slice:
 		return pg, newErrInvalidInput(
-			fmt.Sprintf("value groups may be consumed as slices only: field %q (%v) is not a slice", f.Name, f.Type), nil)
+			fmt.Sprintf("value groups may be consumed as slices only: field %q (%v) is not a slice", f.Name, f.Type),
+			nil)
 	case g.Flatten:
 		return pg, newErrInvalidInput(
-			fmt.Sprintf("cannot use flatten in parameter value groups: field %q (%v) specifies flatten", f.Name, f.Type), nil)
+			fmt.Sprintf("cannot use flatten in parameter value groups: field %q (%v) specifies flatten", f.Name,
+				f.Type), nil)
 	case name != "":
 		return pg, newErrInvalidInput(
-			fmt.Sprintf("cannot use named values with value groups: name:%q requested with group:%q", name, pg.Group), nil)
+			fmt.Sprintf("cannot use named values with value groups: name:%q requested with group:%q", name, pg.Group),
+			nil)
 	case optional:
 		return pg, newErrInvalidInput("value groups cannot be optional", nil)
 	}

@@ -26,7 +26,7 @@ import (
 	"fmt"
 	"io"
 
-	"go.uber.org/dig/internal/digreflect"
+	"github.com/alexisvisco/dig/internal/digreflect"
 )
 
 type cycleErrPathEntry struct {

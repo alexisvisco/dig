@@ -24,9 +24,9 @@ import (
 	"math/rand"
 	"testing"
 
+	"github.com/alexisvisco/dig"
+	"github.com/alexisvisco/dig/internal/digtest"
 	"github.com/stretchr/testify/assert"
-	"go.uber.org/dig"
-	"go.uber.org/dig/internal/digtest"
 )
 
 func TestStringer(t *testing.T) {
@@ -91,7 +91,8 @@ func TestStringer(t *testing.T) {
 	assert.Contains(t, s, "dig_test.B -> deps: []")
 	assert.Contains(t, s, "dig_test.C -> deps: []")
 	assert.Contains(t, s, `dig_test.C[name="bar"] -> deps: []`)
-	assert.Contains(t, s, `dig_test.D -> deps: [dig_test.A[name="foo"] dig_test.B[optional] dig_test.C[optional, name="bar"] string[group="baz"]]`)
+	assert.Contains(t, s,
+		`dig_test.D -> deps: [dig_test.A[name="foo"] dig_test.B[optional] dig_test.C[optional, name="bar"] string[group="baz"]]`)
 	assert.Contains(t, s, `string[group="baz"] -> deps: [dig_test.A]`)
 	assert.Contains(t, s, `string[group="baz"] -> deps: [dig_test.B]`)
 	assert.Contains(t, s, `string[group="baz"] -> deps: [dig_test.C]`)

@@ -10,7 +10,7 @@ digraph {
 		
 	
 		subgraph cluster_0 {
-			label = "go.uber.org/dig_test";
+			label = "github.com/alexisvisco/dig_test";
 			constructor_0 [shape=plaintext label="TestVisualize.func7.1"];
 			color=orange;
 			"dig_test.t3[name=n3]" [label=<dig_test.t3<BR /><FONT POINT-SIZE="10">Name: n3</FONT>>];
@@ -22,7 +22,7 @@ digraph {
 			constructor_0 -> "[type=dig_test.t1 group=g1]" [ltail=cluster_0];
 		
 		subgraph cluster_1 {
-			label = "go.uber.org/dig_test";
+			label = "github.com/alexisvisco/dig_test";
 			constructor_1 [shape=plaintext label="TestVisualize.func7.2"];
 			color=orange;
 			"dig_test.t4" [label=<dig_test.t4>];
@@ -35,7 +35,7 @@ digraph {
 			constructor_1 -> "[type=dig_test.t2 group=g2]" [ltail=cluster_1];
 		
 		subgraph cluster_2 {
-			label = "go.uber.org/dig_test";
+			label = "github.com/alexisvisco/dig_test";
 			constructor_2 [shape=plaintext label="TestVisualize.func7.4"];
 			color=red;
 			"dig_test.t1[group=g1]0" [label=<dig_test.t1<BR /><FONT POINT-SIZE="10">Group: g1</FONT>>];

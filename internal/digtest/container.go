@@ -23,8 +23,8 @@ package digtest
 import (
 	"testing"
 
+	"github.com/alexisvisco/dig"
 	"github.com/stretchr/testify/require"
-	"go.uber.org/dig"
 )
 
 // Container wraps dig.Container to provide methods for easier testing.

@@ -24,8 +24,8 @@ import (
 	"fmt"
 	"reflect"
 
-	"go.uber.org/dig/internal/digerror"
-	"go.uber.org/dig/internal/dot"
+	"github.com/alexisvisco/dig/internal/digerror"
+	"github.com/alexisvisco/dig/internal/dot"
 )
 
 // The result interface represents a result produced by a constructor.
@@ -80,7 +80,8 @@ func newResult(t reflect.Type, opts resultOptions) (result, error) {
 			"cannot build a result object by embedding *dig.Out, embed dig.Out instead: %v embeds *dig.Out", t), nil)
 	case t.Kind() == reflect.Ptr && IsOut(t.Elem()):
 		return nil, newErrInvalidInput(fmt.Sprintf(
-			"cannot return a pointer to a result object, use a value instead: %v is a pointer to a struct that embeds dig.Out", t), nil)
+			"cannot return a pointer to a result object, use a value instead: %v is a pointer to a struct that embeds dig.Out",
+			t), nil)
 	case len(opts.Group) > 0:
 		g, err := parseGroupString(opts.Group)
 		if err != nil {
@@ -419,7 +420,8 @@ func newResultObjectField(idx int, f reflect.StructField, opts resultOptions) (r
 	switch {
 	case f.PkgPath != "":
 		return rof, newErrInvalidInput(
-			fmt.Sprintf("unexported fields not allowed in dig.Out, did you mean to export %q (%v)?", f.Name, f.Type), nil)
+			fmt.Sprintf("unexported fields not allowed in dig.Out, did you mean to export %q (%v)?", f.Name, f.Type),
+			nil)
 
 	case f.Tag.Get(_groupTag) != "":
 		var err error

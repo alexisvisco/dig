@@ -1,4 +1,4 @@
-module go.uber.org/dig
+module github.com/alexisvisco/dig
 
 go 1.18
 

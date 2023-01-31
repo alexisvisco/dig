@@ -29,10 +29,10 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/alexisvisco/dig"
+	"github.com/alexisvisco/dig/internal/digtest"
+	"github.com/alexisvisco/dig/internal/dot"
 	"github.com/stretchr/testify/assert"
-	"go.uber.org/dig"
-	"go.uber.org/dig/internal/digtest"
-	"go.uber.org/dig/internal/dot"
 )
 
 func TestDotGraph(t *testing.T) {

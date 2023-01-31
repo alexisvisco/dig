@@ -345,4 +345,4 @@
 //	  Handler []int `group:"server"`         // [][]int from dig.In
 //	  Handler []int `group:"server,flatten"` // []int from dig.In
 //	}
-package dig // import "go.uber.org/dig"
+package dig // import "github.com/alexisvisco/dig"

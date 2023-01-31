@@ -24,14 +24,29 @@ import (
 	"fmt"
 	"reflect"
 
-	"go.uber.org/dig/internal/digreflect"
-	"go.uber.org/dig/internal/graph"
+	"github.com/alexisvisco/dig/internal/digreflect"
+	"github.com/alexisvisco/dig/internal/graph"
 )
 
 // An InvokeOption modifies the default behavior of Invoke. It's included for
 // future functionality; currently, there are no concrete implementations.
 type InvokeOption interface {
-	unimplemented()
+	applyInvokeOption(*invokeOptions)
+}
+
+type invokeOptions struct {
+	hookBeforeInvoke func()
+}
+
+// HookBeforeInvoke is an InvokeOption that runs the given function before
+func HookBeforeInvoke(HookBeforeInvoke func()) InvokeOption {
+	return hookBeforeInvokeOption(HookBeforeInvoke)
+}
+
+type hookBeforeInvokeOption func()
+
+func (h hookBeforeInvokeOption) applyInvokeOption(options *invokeOptions) {
+	options.hookBeforeInvoke = h
 }
 
 // Invoke runs the given function after instantiating its dependencies.
@@ -59,6 +74,11 @@ func (c *Container) Invoke(function interface{}, opts ...InvokeOption) error {
 // The function may return an error to indicate failure. The error will be
 // returned to the caller as-is.
 func (s *Scope) Invoke(function interface{}, opts ...InvokeOption) (err error) {
+	options := invokeOptions{}
+	for _, opt := range opts {
+		opt.applyInvokeOption(&options)
+	}
+
 	ftype := reflect.TypeOf(function)
 	if ftype == nil {
 		return newErrInvalidInput("can't invoke an untyped nil", nil)
@@ -103,6 +123,10 @@ func (s *Scope) Invoke(function interface{}, opts ...InvokeOption) (err error) {
 				}
 			}
 		}()
+	}
+
+	if options.hookBeforeInvoke != nil {
+		options.hookBeforeInvoke()
 	}
 
 	returned := s.invokerFn(reflect.ValueOf(function), args)
