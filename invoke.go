@@ -28,14 +28,44 @@ import (
 	"github.com/alexisvisco/dig/internal/graph"
 )
 
-// An InvokeOption modifies the default behavior of Invoke. It's included for
-// future functionality; currently, there are no concrete implementations.
+// An InvokeOption modifies the default behavior of Invoke.
 type InvokeOption interface {
 	applyInvokeOption(*invokeOptions)
 }
 
 type invokeOptions struct {
+	Info *InvokeInfo
 	hookBeforeInvoke func()
+}
+
+// InvokeInfo provides information about an Invoke.
+type InvokeInfo struct {
+	Inputs []*Input
+}
+
+// FillInvokeInfo is an InvokeOption that writes information on the types
+// accepted by the Invoke function into the specified InvokeInfo.
+// For example:
+//
+//			var info dig.InvokeInfo
+//			err := c.Invoke(func(string, int){}, dig.FillInvokeInfo(&info))
+//
+//	  info.Inputs[0].String() will be string.
+//	  info.Inputs[1].String() will be int.
+func FillInvokeInfo(info *InvokeInfo) InvokeOption {
+	return fillInvokeInfoOption{info: info}
+}
+
+type fillInvokeInfoOption struct {
+	info *InvokeInfo
+}
+
+func (o fillInvokeInfoOption) String() string {
+	return fmt.Sprintf("FillInvokeInfo(%p)", o.info)
+}
+
+func (o fillInvokeInfoOption) applyInvokeOption(opts *invokeOptions) {
+	opts.Info = o.info
 }
 
 // HookBeforeInvoke is an InvokeOption that runs the given function before
@@ -123,6 +153,20 @@ func (s *Scope) Invoke(function interface{}, opts ...InvokeOption) (err error) {
 				}
 			}
 		}()
+	}
+
+	// Record info for the invoke if requested
+	if info := options.Info; info != nil {
+		params := pl.DotParam()
+		info.Inputs = make([]*Input, len(params))
+		for i, p := range params {
+			info.Inputs[i] = &Input{
+				t:        p.Type,
+				optional: p.Optional,
+				name:     p.Name,
+				group:    p.Group,
+			}
+		}
 	}
 
 	if options.hookBeforeInvoke != nil {
