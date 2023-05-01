@@ -43,6 +43,7 @@ type provideOptions struct {
 	As       []interface{}
 	Location *digreflect.Func
 	Exported bool
+	Callback Callback
 }
 
 func (o *provideOptions) Validate() error {
@@ -468,6 +469,7 @@ func (s *Scope) provide(ctor interface{}, opts provideOptions) (err error) {
 			ResultGroup: opts.Group,
 			ResultAs:    opts.As,
 			Location:    opts.Location,
+			Callback:    opts.Callback,
 		},
 	)
 	if err != nil {
